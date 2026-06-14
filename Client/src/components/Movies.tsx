@@ -3,6 +3,7 @@ import MovieCard from "./MovieCard";
 import Search from "./Search";
 // import { useDebounce } from "react-use";
 import type { MovieList } from "../constants/movie";
+import TrendingCard from "./TrendingCard";
 
 const API_BASE_URL = "https://api.themoviedb.org/3"
 
@@ -35,7 +36,7 @@ const Movies = () => {
     
 
     useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
     const SendMoviesData = async () => {
       try {
       const response = await fetch("http://localhost:5000/api/movies", {
@@ -44,7 +45,7 @@ const Movies = () => {
         "Content-Type": "application/json",
         },
         body: JSON.stringify({
-        searchTerm: debouncedSearchTerm,
+        searchTerm: debouncedSearchTerm.toLocaleLowerCase(),
         movie:movieData,
         }),
       });
@@ -57,7 +58,7 @@ const Movies = () => {
     };
     SendMoviesData();
     }
-  }, [debouncedSearchTerm.toLocaleLowerCase(), movieData]);
+  }, [debouncedSearchTerm, movieData]);
 
     const fetchMovies = async (query='') => {
       if(cache.current[query]){
@@ -113,8 +114,8 @@ const Movies = () => {
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <div className="border-3 border-b-blue-900 border-t-blue-900 border-l-0 border-r-0 mt-8 mb-[10%]">
-        <h2>Trending Movies</h2>
-        
+        <h2 className="md:text-3xl">Trending Movies</h2>
+        <TrendingCard />
       </div>
 
       <h2 className="md:text-3xl sm:text-2xl text-xl mb-10 ml-4 align-middle text-left">All Movies</h2>

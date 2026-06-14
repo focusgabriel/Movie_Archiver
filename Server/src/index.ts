@@ -60,9 +60,11 @@ type MovieSchema = {
         const newMovieEntry = new newMovie({
           searchTerm,
           count: 1,
-          poster_url: movie[0].poster_path ? `https://image.tmdb.org/t/p/w500${movie[0].poster_path}` : "",
+          poster_url: movie[0].poster_path ? `https://image.tmdb.org/t/p/w500${movie[0].poster_path}` : "./images/no-movie.png",
           
         });
+
+        
         await newMovieEntry.save();
       }
     } catch (error) {
@@ -77,7 +79,7 @@ app.use(
 )
 
 app.get("/api/movies", async(req, res) => {
-  const movies = await newMovie.find().sort({ count: -1 }).limit(10);
+  const movies = await newMovie.find().sort({ count: -1 }).limit(5);
   try {
     res.status(200).json(movies);
     // console.log("movies from database:", movies)
