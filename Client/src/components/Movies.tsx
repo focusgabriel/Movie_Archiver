@@ -18,11 +18,11 @@ const API_OPTION = {
 
 const Movies = () => {
     const cache = useRef<Record<string, MovieList[]>>({});
-    const [searchTerm, setSearchTerm] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [movieData, setMovieData] = useState<MovieList[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [debouncedSearchTerm, setdebouncedSearchTerm] = useState("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [debouncedSearchTerm, setdebouncedSearchTerm] = useState<string>("");
 
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -49,19 +49,18 @@ const Movies = () => {
         }),
       });
       const data = await response.json();
-      console.log(data);
-      // console.log(JSON.stringify(movieData[0].poster_path));
+        console.log(data);
+      
       } catch (error) {
       console.error("Error sending data:", error);
       }
     };
     SendMoviesData();
     }
-  }, [debouncedSearchTerm, movieData]);
+  }, [debouncedSearchTerm.toLocaleLowerCase(), movieData]);
 
     const fetchMovies = async (query='') => {
       if(cache.current[query]){
-        console.log("🔶 Using cache for:", query);
         setMovieData(cache.current[query]);
         return;
       }
@@ -77,15 +76,14 @@ const Movies = () => {
         if(!response.ok){
           throw new Error("Failed to fetch movies")
         }
-
         const data = await response.json();
-        // console.log(data);
+
         if(data.Response === false){
           setErrorMessage(data.error || "Can't find Movies. please try again")
           setMovieData([])
           return;
         }
-        console.log(movieData);
+        // console.log(movieData);
         setMovieData(data.results || [])
 
         cache.current[query] = data.results; 
@@ -104,20 +102,26 @@ const Movies = () => {
 
 
   return (
-    <div className="border border-amber-300 ">
-      <div className="flex justify-between mx-auto w-[80%] mt-4 gap-4">
+    <div className="">
+      <div className="flex justify-between mt-4 gap-4">
       {/* <img src="/banner.png" alt="banner" className="w-[40%] text-center flex-4  my-4 rounded-4xl" /> */}
-      <img src="/banner3.png" alt="banner" className="w-full object-cover text-center rounded-4xl "   />
+      <img src="/banner.png" alt="banner" className="w-full object-cover  text-center rounded-xl h-60 md:h-100 lg:h-100"   />
       </div>
-      <h2 className="text-3xl mt-40 mb-20 align-middle text-center ">
+      <h2 className="text-3xl mt-20 mb-20 align-middle text-center ">
         Find <span className="text-red-600 text-5xl">Movies</span> You'll Enjoy Without the Hassle
       </h2>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <h2 className="text-3xl mb-10 ml-4 align-middle text-left">Current Movies</h2>
+
+      <div className="border-3 border-b-blue-900 border-t-blue-900 border-l-0 border-r-0 mt-8 mb-[10%]">
+        <h2>Trending Movies</h2>
+        
+      </div>
+
+      <h2 className="md:text-3xl sm:text-2xl text-xl mb-10 ml-4 align-middle text-left">All Movies</h2>
       {loading ? (
         <p>Loading...</p>
       ): errorMessage ? 
-      (<p>{errorMessage}</p>) :
+      (<p>{errorMessage.length === 1}</p>) :
       <div>
         <div className="grid grid-cols-1 md:grid-cols-4 w-400px object-contain sm:grid-cols-2">
         
@@ -131,7 +135,6 @@ const Movies = () => {
       </div>
     }
       {errorMessage && <p className="text-500-red">{errorMessage}</p>}
-
     </div>
   )
 

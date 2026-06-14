@@ -21,7 +21,7 @@ const MovieCard = ({
 //   {title, vote_average, poster_path, release_date, original_language }
 // }) => {
   return (
-    <div className="m-4 bg-black rounded-md">
+    <div className="m-4 bg-black rounded-md ">
       <img src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}`: '/no-movie.png'} className="h-70 w-full object-contain mt-3 rounded-md"  />
 
 

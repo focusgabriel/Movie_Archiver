@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+*{
+  box-sizing: border-box;
+}
+
 body{
-  background: linear-gradient(to left,rgb(22, 22, 52), rgb(25, 25, 62)), linear-gradient(to top,rgb(18, 18, 20), rgb(21, 21, 49))
+  background: linear-gradient(rgb(22, 22, 52), rgb(25, 25, 62))
 }

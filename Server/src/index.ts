@@ -8,19 +8,20 @@ dotenv.config();
 
 const mongo_uri = process.env.MONGO_URI;
 
+
 if(!mongo_uri){
   throw new Error("Nothing to display")
 }
 mongoose.connect(mongo_uri);
 
 type MovieSchema = {
-  getSearch: String,
+  searchTerm: String,
   count: number,
   poster_url: string,
 }
 
   const MovieProps = new mongoose.Schema<MovieSchema>({
-    getSearch : {
+    searchTerm : {
       type: String,
       required: true,
     },
@@ -50,14 +51,14 @@ type MovieSchema = {
   app.use(express.json())
   export async function PopulateDatabase(searchTerm: string, movie:MovieList[]) {
     try{
-      const existingMovie = await newMovie.findOne({ getSearch:searchTerm });
-      // console.log(getSearch);
+      const existingMovie = await newMovie.findOne({ searchTerm });
+      // console.log(searchTerm);
       if(existingMovie){
         existingMovie.count += 1;
         await existingMovie.save();
       } else {
         const newMovieEntry = new newMovie({
-          getSearch:searchTerm,
+          searchTerm,
           count: 1,
           poster_url: movie[0].poster_path ? `https://image.tmdb.org/t/p/w500${movie[0].poster_path}` : "",
           
@@ -79,6 +80,7 @@ app.get("/api/movies", async(req, res) => {
   const movies = await newMovie.find().sort({ count: -1 }).limit(10);
   try {
     res.status(200).json(movies);
+    // console.log("movies from database:", movies)
   } catch (error:any) {
     res.status(400).json({message: error.message})
   }
