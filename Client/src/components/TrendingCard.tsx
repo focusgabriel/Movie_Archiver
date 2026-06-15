@@ -15,7 +15,7 @@ const TrendingCard = () => {
     fetch(`http://localhost:5000/api/movies`)
     .then(res => res.json())
     .then(data => setapiData(data))
-  }, [apiData])
+  }, [])
 
   return (
     <div className="my-10">

@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
 import Search from "./Search";
@@ -22,6 +23,7 @@ const Movies = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [movieData, setMovieData] = useState<MovieList[]>([]);
+    const [trendingMovie, setTrendingMovie] = useState<MovieList[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [debouncedSearchTerm, setdebouncedSearchTerm] = useState<string>("");
 
@@ -46,11 +48,11 @@ const Movies = () => {
         },
         body: JSON.stringify({
         searchTerm: debouncedSearchTerm.toLocaleLowerCase(),
-        movie:movieData,
+        movie:trendingMovie,
         }),
       });
       const data = await response.json();
-        console.log(data);
+        console.log("Data sent:", data);
       
       } catch (error) {
       console.error("Error sending data:", error);
@@ -58,11 +60,14 @@ const Movies = () => {
     };
     SendMoviesData();
     }
-  }, [debouncedSearchTerm, movieData]);
+    console.log(searchTerm);
+    console.log(trendingMovie)
+  }, [debouncedSearchTerm]);
 
     const fetchMovies = async (query='') => {
       if(cache.current[query]){
         setMovieData(cache.current[query]);
+        setTrendingMovie(cache.current[query]);
         return;
       }
       console.log("Fetching from API:", query);
@@ -72,22 +77,34 @@ const Movies = () => {
         ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
         : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
-        const response = await fetch(endpoint, API_OPTION)
+        const trendingEndpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`;
 
-        if(!response.ok){
+        const trendyResponse = await fetch(trendingEndpoint, API_OPTION);
+        const response = await fetch(endpoint, API_OPTION);
+
+        if(!response.ok || !trendyResponse.ok){
           throw new Error("Failed to fetch movies")
         }
         const data = await response.json();
+        const trendyData = await trendyResponse.json();
 
-        if(data.Response === false){
+        if(data.Response === false || trendyData.Response === false){
           setErrorMessage(data.error || "Can't find Movies. please try again")
-          setMovieData([])
+          setMovieData([]);
+          setTrendingMovie([]);
           return;
         }
         // console.log(movieData);
         setMovieData(data.results || [])
+        setTrendingMovie(trendyData.results || [])
+
+        console.log("this is movie data", movieData);
+        console.log("this is trending movie", trendingMovie);
 
         cache.current[query] = data.results; 
+        cache.current[query] = trendyData.results;
+
+        
 
       } catch (error) {
         console.error(`Error fetching movies: ${error}`)
@@ -141,3 +158,6 @@ const Movies = () => {
 
 }
 export default Movies;
+
+
+// in the query create a new data that would be coming from the api and store it in a new array and from there get the first poster_url from there, and this means that i would be getting it from the movieData array which is the first one that renders if i open the movie app.
