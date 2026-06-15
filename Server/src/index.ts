@@ -7,7 +7,7 @@ import cors from "cors"
 dotenv.config();
 
 const mongo_uri = process.env.MONGO_URI;
-
+const PORT = 5000;
 
 if(!mongo_uri){
   throw new Error("Nothing to display")
@@ -15,7 +15,7 @@ if(!mongo_uri){
 mongoose.connect(mongo_uri);
 
 type MovieSchema = {
-  searchTerm: String,
+  searchTerm: string,
   count: number,
   poster_url: string,
 }
@@ -48,8 +48,10 @@ type MovieSchema = {
 
   const app = express();
 
-  app.use(express.json())
+  app.use(express.json());
   export async function PopulateDatabase(searchTerm: string, movie:MovieList[]) {
+    console.log(movie[0].poster_path);
+    // const firstMovie = movie?.[0]
     try{
       const existingMovie = await newMovie.findOne({ searchTerm });
       // console.log(searchTerm);
@@ -57,15 +59,17 @@ type MovieSchema = {
         existingMovie.count += 1;
         await existingMovie.save();
       } else {
-        const newMovieEntry = new newMovie({
-          searchTerm,
-          count: 1,
-          poster_url: movie[0].poster_path ? `https://image.tmdb.org/t/p/w500${movie[0].poster_path}` : "./images/no-movie.png",
-          
-        });
-
         
-        await newMovieEntry.save();
+        if(movie) {
+          const newMovieEntry = new newMovie({
+            searchTerm,
+            count: 1,
+            poster_url: movie[0].poster_path ? `https://image.tmdb.org/t/p/w500${movie[0].poster_path}` : "/images/no-movie.png",
+            
+          });
+        
+          await newMovieEntry.save();
+        }
       }
     } catch (error) {
       console.error("Error populating database:", error);
@@ -79,8 +83,8 @@ app.use(
 )
 
 app.get("/api/movies", async(req, res) => {
-  const movies = await newMovie.find().sort({ count: -1 }).limit(5);
   try {
+    const movies = await newMovie.find().sort({ count: -1 }).limit(5);
     res.status(200).json(movies);
     // console.log("movies from database:", movies)
   } catch (error:any) {
@@ -99,6 +103,6 @@ app.post("/api/movies", async (req, res) => {
     }
   });
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
   console.log("Server running on port 5000");
 });

@@ -11,19 +11,18 @@ const TrendingCard = () => {
 
   const [apiData, setapiData] = useState<MovieList[]>([]);
   useEffect(() => {
-
-
+  
     fetch(`http://localhost:5000/api/movies`)
     .then(res => res.json())
-    .then(data => setapiData(data));
+    .then(data => setapiData(data))
   }, [apiData])
 
   return (
     <div className="my-10">
 
-      <ul className="flex justify-between align-middle">
+      <ul className="flex justify-between align-middle ">
         {apiData.map((movie, index) => (
-          <li key={index} className="w-[80%] mx-4">
+          <li key={index += 1} className="w-[80%] mx-4">
             <img src={movie.poster_url} alt={movie.searchTerm} className="w-full h-50 object-center rounded-2xl" />
           </li>
         ))}
