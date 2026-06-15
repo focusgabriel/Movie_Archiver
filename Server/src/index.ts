@@ -50,7 +50,8 @@ type MovieSchema = {
 
   app.use(express.json());
   export async function PopulateDatabase(searchTerm: string, movie:MovieList[]) {
-    console.log(movie[0].poster_path);
+    console.log(movie[1].poster_path);
+    
     // const firstMovie = movie?.[0]
     try{
       const existingMovie = await newMovie.findOne({ searchTerm });
@@ -59,12 +60,18 @@ type MovieSchema = {
         existingMovie.count += 1;
         await existingMovie.save();
       } else {
-        
+          let i = 0;
+            for(i=0; i<movie.length; i++){
+              if(i === 1){
+
+                break;
+              }
+            }
         if(movie) {
           const newMovieEntry = new newMovie({
             searchTerm,
             count: 1,
-            poster_url: movie[0].poster_path ? `https://image.tmdb.org/t/p/w500${movie[0].poster_path}` : "/images/no-movie.png",
+            poster_url: movie[i].poster_path ? `https://image.tmdb.org/t/p/w500${movie[i].poster_path}` : "/images/no-movie.png",
             
           });
         
