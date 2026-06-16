@@ -21,8 +21,8 @@ const TrendingCard = () => {
 
       <ul className="flex flex-nowrap gap-4 px-4" >
         {apiData.map((movie, index) => (
-          <li key={index += 1} className="shrink-0 w-40  mx-2  px-2">
-            <img src={movie.poster_url} alt={movie.searchTerm} className="w-full h-40 rounded-xl" />
+          <li key={index += 1} className="shrink-0 w-40  mx-2  px-2 flex text-[#b7b6e3]">
+            <p className="text-8xl text-center">{index += 1}</p> <img src={movie.poster_url} alt={movie.searchTerm} className="w-full h-40 rounded-xl" />
           </li>
         ))}
       </ul>
