@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import MovieCard from "./MovieCard";
 import Search from "./Search";
@@ -23,7 +22,7 @@ const Movies = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [movieData, setMovieData] = useState<MovieList[]>([]);
-    const [trendingMovie, setTrendingMovie] = useState<MovieList[]>([]);
+    const [firstPosterUrl, setFirstPosterUrl] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [debouncedSearchTerm, setdebouncedSearchTerm] = useState<string>("");
 
@@ -36,38 +35,41 @@ const Movies = () => {
     }, [searchTerm]);
 
     
+    
 
-    useEffect(() => {
-    if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
-    const SendMoviesData = async () => {
-      try {
-      const response = await fetch("http://localhost:5000/api/movies", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-        searchTerm: debouncedSearchTerm.toLocaleLowerCase(),
-        movie:trendingMovie,
-        }),
-      });
-      const data = await response.json();
-        console.log("Data sent:", data);
+
+
+
+
+  //   useEffect(() => {
+  //   if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
+  //   const SendMoviesData = async () => {
+  //     try {
+  //     const response = await fetch("http://localhost:5000/api/movies", {
+  //       method: "POST",
+  //       headers: {
+  //       "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //       searchTerm: debouncedSearchTerm.toLocaleLowerCase(),
+  //       movie:movieData,
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //       console.log(data);
       
-      } catch (error) {
-      console.error("Error sending data:", error);
-      }
-    };
-    SendMoviesData();
-    }
-    console.log(searchTerm);
-    console.log(trendingMovie)
-  }, [debouncedSearchTerm]);
+  //     } catch (error) {
+  //     console.error("Error sending data:", error);
+  //     }
+  //   };
+  //   SendMoviesData();
+  //   }
+  //   console.log(searchTerm);
+  // }, [debouncedSearchTerm, movieData]);
 
     const fetchMovies = async (query='') => {
       if(cache.current[query]){
         setMovieData(cache.current[query]);
-        setTrendingMovie(cache.current[query]);
         return;
       }
       console.log("Fetching from API:", query);
@@ -77,33 +79,70 @@ const Movies = () => {
         ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
         : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
-        const trendingEndpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`;
+        const response = await fetch(endpoint, API_OPTION)
 
-        const trendyResponse = await fetch(trendingEndpoint, API_OPTION);
-        const response = await fetch(endpoint, API_OPTION);
-
-        if(!response.ok || !trendyResponse.ok){
+        if(!response.ok){
           throw new Error("Failed to fetch movies")
         }
         const data = await response.json();
-        const trendyData = await trendyResponse.json();
 
-        if(data.Response === false || trendyData.Response === false){
+        if(data.Response === false){
           setErrorMessage(data.error || "Can't find Movies. please try again")
-          setMovieData([]);
-          setTrendingMovie([]);
+          setMovieData([])
           return;
         }
-        // console.log(movieData);
-        setMovieData(data.results || [])
-        setTrendingMovie(trendyData.results || [])
 
-        console.log("this is movie data", movieData);
-        console.log("this is trending movie", trendingMovie);
+        setMovieData(data.results || [])
+        console.log("this is trending movie:", movieData);
 
         cache.current[query] = data.results; 
-        cache.current[query] = trendyData.results;
 
+
+        // sending returned query to the backend for the trending movies logic
+
+        // if (query && Array.isArray(data.results) && data.results.length > 0) {
+        //     try {
+        //       const resp = await fetch("http://localhost:5000/api/movies", {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({ searchTerm: query.toLowerCase(), movie: data.results }),
+        //       });
+        //       const respData = await resp.json();
+        //       if (respData && respData.poster_url) {
+        //         setFirstPosterUrl(respData.poster_url);
+        //       }
+        //     } catch (err) {
+        //       console.error("Error sending data to server:", err);
+        //     }
+        //   }
+
+
+
+
+          //  useEffect(() => {
+    if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
+      try {
+      const response = await fetch("http://localhost:5000/api/movies", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+        searchTerm: debouncedSearchTerm.toLocaleLowerCase(),
+        movie:data.results,
+        }),
+      });
+      const resData = await response.json();
+        console.log(resData);
+      
+      } catch (error) {
+      console.error("Error sending data:", error);
+      }
+    };
+
+  
+    console.log(searchTerm);
+  // }, [debouncedSearchTerm, movieData]);
         
 
       } catch (error) {
@@ -130,7 +169,7 @@ const Movies = () => {
       </h2>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      <div className="border-3 border-b-blue-900 border-t-blue-900 border-l-0 border-r-0 mt-8 mb-[10%]">
+      <div className="mt-8 mb-[10%]">
         <h2 className="md:text-3xl">Trending Movies</h2>
         <TrendingCard />
       </div>

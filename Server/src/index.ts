@@ -54,7 +54,7 @@ type MovieSchema = {
     // const firstMovie = movie.find((m) => m.title.toLowerCase().includes(searchTerm.toLowerCase()));
     // console.log(firstMovie?.poster_path);
     const matchedMovie = movie?.[0];
-    console.log(matchedMovie.poster_path);
+    console.log("this one is coming from backend:", matchedMovie.poster_path);
     try{
       const existingMovie = await newMovie.findOne({ searchTerm });
       // console.log(searchTerm);
@@ -62,13 +62,14 @@ type MovieSchema = {
         existingMovie.count += 1;
         await existingMovie.save();
       } else {
-          if(movie) {
+          if(movie.length > 0) {
             const newMovieEntry = new newMovie({
               searchTerm,
               count: 1,
               poster_url: matchedMovie?.poster_path ? `https://image.tmdb.org/t/p/w500${matchedMovie?.poster_path}` : "/images/no-movie.png",
           });
           await newMovieEntry.save();
+          return newMovieEntry.poster_url || null;
         }
       }
     } catch (error) {
