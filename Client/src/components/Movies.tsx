@@ -35,38 +35,6 @@ const Movies = () => {
     }, [searchTerm]);
 
     
-    
-
-
-
-
-
-  //   useEffect(() => {
-  //   if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
-  //   const SendMoviesData = async () => {
-  //     try {
-  //     const response = await fetch("http://localhost:5000/api/movies", {
-  //       method: "POST",
-  //       headers: {
-  //       "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //       searchTerm: debouncedSearchTerm.toLocaleLowerCase(),
-  //       movie:movieData,
-  //       }),
-  //     });
-  //     const data = await response.json();
-  //       console.log(data);
-      
-  //     } catch (error) {
-  //     console.error("Error sending data:", error);
-  //     }
-  //   };
-  //   SendMoviesData();
-  //   }
-  //   console.log(searchTerm);
-  // }, [debouncedSearchTerm, movieData]);
-
     const fetchMovies = async (query='') => {
       if(cache.current[query]){
         setMovieData(cache.current[query]);
