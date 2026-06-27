@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import movieRouter from "./route";
 // import Schema from "mongoose";
 import cors from "cors"
 
@@ -44,15 +45,12 @@ type MovieSchema = {
     release_date: string;
   };
 
-  const newMovie = mongoose.model("MoviesList", MovieProps);
+  export const newMovie = mongoose.model("MoviesList", MovieProps);
 
   const app = express();
 
   app.use(express.json());
   export async function PopulateDatabase(searchTerm: string, movie:MovieList[]) {
-    
-    // const firstMovie = movie.find((m) => m.title.toLowerCase().includes(searchTerm.toLowerCase()));
-    // console.log(firstMovie?.poster_path);
     const matchedMovie = movie?.[0];
     console.log("this one is coming from backend:", matchedMovie.poster_path);
     try{
@@ -83,27 +81,30 @@ app.use(
   })
 )
 
-app.get("/api/movies", async(req, res) => {
-  try {
-    const movies = await newMovie.find().sort({ count: -1 }).limit(5);
-    res.status(200).json(movies);
-    // console.log("movies from database:", movies)
-  } catch (error:any) {
-    res.status(400).json({message: error.message})
-  }
-});
+// app.get("/api/movies", async(req, res) => {
+//   try {
+//     const movies = await newMovie.find().sort({ count: -1 }).limit(5);
+//     res.status(200).json(movies);
+//     // console.log("movies from database:", movies)
+//   } catch (error:any) {
+//     res.status(400).json({message: error.message})
+//   }
+// });
 
-app.post("/api/movies", async (req, res) => {
-    try {
-      const {searchTerm, movie} = req.body;
-      await PopulateDatabase(searchTerm, movie); 
-      res.status(200).json({ message: "Movie data stored successfully" });
-    } catch (error) {
-      console.error("Error storing movie data:", error);
-      res.status(500).json({ message: "Error storing movie data" });
-    }
-  });
+// app.post("/api/movies", async (req, res) => {
+//     try {
+//       const {searchTerm, movie} = req.body;
+//       await PopulateDatabase(searchTerm, movie); 
+//       res.status(200).json({ message: "Movie data stored successfully" });
+//     } catch (error) {
+//       console.error("Error storing movie data:", error);
+//       res.status(500).json({ message: "Error storing movie data" });
+//     }
+//   });
 
+app.use(movieRouter)
 app.listen(PORT, () => {
   console.log("Server running on port 5000");
 });
+
+

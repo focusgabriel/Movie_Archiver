@@ -22,7 +22,7 @@ const Movies = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [movieData, setMovieData] = useState<MovieList[]>([]);
-    const [firstPosterUrl, setFirstPosterUrl] = useState("");
+    // const [firstPosterUrl, setFirstPosterUrl] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [debouncedSearchTerm, setdebouncedSearchTerm] = useState<string>("");
 
@@ -148,7 +148,7 @@ const Movies = () => {
       ): errorMessage ? 
       (<p>{errorMessage.length === 1}</p>) :
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-4 w-400px object-contain sm:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-4 w-400px object-contain sm:grid-cols-2 xl:grid-cols-7 xxl:grid-cols-10">
         
           {movieData.map((movie) => (
             <MovieCard key={movie.id} 
