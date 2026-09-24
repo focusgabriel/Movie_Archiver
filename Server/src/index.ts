@@ -8,7 +8,7 @@ import cors from "cors"
 dotenv.config();
 
 const mongo_uri = process.env.MONGO_URI;
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 if(!mongo_uri){
   throw new Error("Nothing to display")
@@ -104,7 +104,7 @@ app.use(
 
 app.use(movieRouter)
 app.listen(PORT, () => {
-  console.log("Server running on port 5000");
+  console.log(`Server running on port ${PORT}`);
 });
 
 

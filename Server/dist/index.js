@@ -85,5 +85,5 @@ app.use((0, cors_1.default)({
 //   });
 app.use(route_1.default);
 app.listen(PORT, () => {
-    console.log("Server running on port 5000");
+    console.log(`Server running on localhost:${PORT}`);
 });
