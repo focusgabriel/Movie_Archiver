@@ -7,7 +7,7 @@ const Search = ({searchTerm, setSearchTerm}: serarchProps) => {
   return (
     <div>
         <div className="text-center">
-          <img src="/search.png" alt="search" className="absolute w-10 h-7 mt-1  sm:ml-5 md:ml-60 xl:ml-60  text-center object-contain block" />
+          <img src="/search.png" alt="search" className="absolute w-10 h-7 mt-1  sm:ml-5 md:ml-50 lg:ml-52  text-center object-contain block" />
           <input 
             type="text"
             placeholder="Search through thousands of movies"
