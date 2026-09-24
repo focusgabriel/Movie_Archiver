@@ -13,7 +13,7 @@ const route_1 = __importDefault(require("./route"));
 const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const mongo_uri = process.env.MONGO_URI;
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 if (!mongo_uri) {
     throw new Error("Nothing to display");
 }
@@ -62,7 +62,7 @@ async function PopulateDatabase(searchTerm, movie) {
     }
 }
 app.use((0, cors_1.default)({
-    origin: "*"
+    origin: ""
 }));
 // app.get("/api/movies", async(req, res) => {
 //   try {
