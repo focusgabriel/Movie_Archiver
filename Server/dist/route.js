@@ -33,3 +33,4 @@ movieRouter.post("/api/movies", async (req, res) => {
     }
 });
 exports.default = movieRouter;
+//# sourceMappingURL=route.js.map

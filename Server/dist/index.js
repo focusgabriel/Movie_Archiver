@@ -37,7 +37,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 async function PopulateDatabase(searchTerm, movie) {
     const matchedMovie = movie?.[0];
-    console.log("this one is coming from backend:", matchedMovie.poster_path);
+    console.log("this one is coming from backend:", matchedMovie?.poster_path);
     try {
         const existingMovie = await exports.newMovie.findOne({ searchTerm });
         // console.log(searchTerm);
@@ -62,7 +62,7 @@ async function PopulateDatabase(searchTerm, movie) {
     }
 }
 app.use((0, cors_1.default)({
-    origin: "*"
+    origin: process.env.CLIENT_URL || process.env.LOCAL_URL
 }));
 // app.get("/api/movies", async(req, res) => {
 //   try {
@@ -85,5 +85,6 @@ app.use((0, cors_1.default)({
 //   });
 app.use(route_1.default);
 app.listen(PORT, () => {
-    console.log(`Server running on localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
+//# sourceMappingURL=index.js.map

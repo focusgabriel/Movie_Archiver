@@ -52,7 +52,7 @@ type MovieSchema = {
   app.use(express.json());
   export async function PopulateDatabase(searchTerm: string, movie:MovieList[]) {
     const matchedMovie = movie?.[0];
-    console.log("this one is coming from backend:", matchedMovie.poster_path);
+    console.log("this one is coming from backend:", matchedMovie?.poster_path);
     try{
       const existingMovie = await newMovie.findOne({ searchTerm });
       // console.log(searchTerm);
