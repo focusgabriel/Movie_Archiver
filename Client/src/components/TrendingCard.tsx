@@ -12,7 +12,7 @@ const TrendingCard = () => {
   const [apiData, setapiData] = useState<MovieList[]>([]);
   useEffect(() => {
     
-    fetch(`http://localhost:5000/api/movies`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/api/movies`)
     .then(res => res.json())
     .then(data => setapiData(data))
   }, [])

@@ -77,7 +77,7 @@ type MovieSchema = {
   
 app.use(
   cors({
-    origin: "*"
+    origin: process.env.CLIENT_URL || process.env.LOCAL_URL
   })
 )
 

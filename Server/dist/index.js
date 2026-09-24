@@ -62,7 +62,7 @@ async function PopulateDatabase(searchTerm, movie) {
     }
 }
 app.use((0, cors_1.default)({
-    origin: process.env.CLIENT_URL || process.env.LOCALURL
+    origin: "*"
 }));
 // app.get("/api/movies", async(req, res) => {
 //   try {

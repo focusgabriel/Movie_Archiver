@@ -70,7 +70,7 @@ const Movies = () => {
 
         // if (query && Array.isArray(data.results) && data.results.length > 0) {
         //     try {
-        //       const resp = await fetch("http://localhost:5000/api/movies", {
+        //       const resp = await fetch(`${import.env.SERVER_URL/api/movies}/api/movies`, {
         //         method: "POST",
         //         headers: { "Content-Type": "application/json" },
         //         body: JSON.stringify({ searchTerm: query.toLowerCase(), movie: data.results }),
@@ -90,7 +90,7 @@ const Movies = () => {
           //  useEffect(() => {
     if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
       try {
-      const response = await fetch("http://localhost:5000/api/movies", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/movies`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
