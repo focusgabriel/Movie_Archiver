@@ -1,5 +1,9 @@
+interface serarchProps {
+  searchTerm: string;
+  setSearchTerm: any;
+}
 
-const Search = ({searchTerm, setSearchTerm}) => {
+const Search = ({searchTerm, setSearchTerm}: serarchProps) => {
   return (
     <div>
         <div className="text-center">

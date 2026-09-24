@@ -47,8 +47,8 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    // "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
