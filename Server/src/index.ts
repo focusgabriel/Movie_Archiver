@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import movieRouter from "./route";
@@ -47,9 +47,29 @@ type MovieSchema = {
 
   export const newMovie = mongoose.model("MoviesList", MovieProps);
 
-  const app = express();
+  const app:Application = express();
+
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL || process.env.LOCAL_URL,
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  )
 
   app.use(express.json());
+  app.use(express.urlencoded({ extended: false }))
+
+  app.get("/health", async(_req:Request, res:Response) => {
+    try{
+      res.status(200).json({status: "ok", database: "Connected"});
+    } catch(error) {
+      console.error(error);
+      res.status(400).json({status: "failed", database: "Disconnected"});
+    }
+  })
+  
   export async function PopulateDatabase(searchTerm: string, movie:MovieList[]) {
     const matchedMovie = movie?.[0];
     console.log("this one is coming from backend:", matchedMovie?.poster_path);
@@ -75,11 +95,7 @@ type MovieSchema = {
     } 
   }
   
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || process.env.LOCAL_URL
-  })
-)
+
 
 // app.get("/api/movies", async(req, res) => {
 //   try {
