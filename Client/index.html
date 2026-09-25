@@ -2,12 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://image.tmdb.org; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://api.themoviedb.org; font-src 'self' data:;" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>file1</title>
+    <meta name="theme-color" content="#1b1436" />
+    <meta name="application-name" content="MoviesArchiver" />
+    <meta name="description" content="MoviesArchiver helps you discover trending movies, search for titles quickly, and find your next favorite watch on a clean, fast movie archive experience." />
+    <meta name="keywords" content="movie archive, trending movies, movie search, watchlist, movie recommendations, MoviesArchiver" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="MoviesArchiver" />
+    <link rel="canonical" href="https://moviesarchiver.vercel.app/" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MoviesArchiver" />
+    <meta property="og:title" content="MoviesArchiver | Discover Trending Movies" />
+    <meta property="og:description" content="Find trending movies and search for titles you will enjoy without the hassle." />
+    <meta property="og:url" content="https://moviesarchiver.vercel.app/" />
+    <meta property="og:image" content="https://moviesarchiver.vercel.app/banner.png" />
+    <meta property="og:image:alt" content="MoviesArchiver movie banner" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MoviesArchiver | Discover Trending Movies" />
+    <meta name="twitter:description" content="Search trending titles and uncover movie recommendations in one easy movie archive." />
+    <meta name="twitter:image" content="https://moviesarchiver.vercel.app/banner.png" />
+    <title>MoviesArchiver | Discover Trending Movies</title>
   </head>
   <body>
     <div id="root"></div>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "MoviesArchiver",
+        "url": "https://moviesarchiver.vercel.app/",
+        "description": "A movie archive website for discovering trending movies and searching for your next favorite watch.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://moviesarchiver.vercel.app/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
