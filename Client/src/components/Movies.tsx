@@ -22,7 +22,6 @@ const Movies = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [movieData, setMovieData] = useState<MovieList[]>([]);
-    // const [firstPosterUrl, setFirstPosterUrl] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [debouncedSearchTerm, setdebouncedSearchTerm] = useState<string>("");
 
