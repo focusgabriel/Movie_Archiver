@@ -83,10 +83,6 @@ const Movies = () => {
         //     }
         //   }
 
-
-
-
-          //  useEffect(() => {
     if (debouncedSearchTerm && debouncedSearchTerm.trim()) {
       try {
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/movies`, {
@@ -109,7 +105,6 @@ const Movies = () => {
 
   
     console.log(searchTerm);
-  // }, [debouncedSearchTerm, movieData]);
         
 
       } catch (error) {

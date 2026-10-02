@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import movieRouter from "./route";
 // import Schema from "mongoose";
-import cors from "cors"
+import cors, {CorsOptions} from "cors"
 
 dotenv.config();
 
@@ -49,12 +49,22 @@ type MovieSchema = {
 
   const app:Application = express();
 
+  const allowedLocations: string[] = [
+    `https://moviesarchiver.vercel.app`,
+    `http://localhost:5173`
+  ];
+  console.log(allowedLocations);
+
+  // const corsOptions: CorsOptions = {
+  //   origin: allowedLocations
+  // }
   app.use(
     cors({
-      origin: process.env.CLIENT_URL || process.env.LOCAL_URL,
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-      allowedHeaders: ["Content-Type", "Authorization"],
+      origin: process.env.CLIENT_URL
+      // credentials: true,
+      // methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      // allowedHeaders: ["Content-Type", "Authorization"],
+
     })
   )
 
@@ -120,7 +130,7 @@ type MovieSchema = {
 
 app.use(movieRouter)
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port http://localhost:${PORT}`);
 });
 
 

@@ -1,14 +1,8 @@
 import express from "express";
 import {PopulateDatabase} from "./index";
 import {newMovie} from "./index"
-import cors from "cors";
 
 const movieRouter = express.Router();
-
-// const app = express();
-// app.use(cors({
-//     origin: "*"
-// }));
 
 movieRouter.get("/api/movies", async(req, res) => {
   try {
